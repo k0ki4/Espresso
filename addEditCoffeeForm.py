@@ -169,7 +169,7 @@ class CoffeeApp(QMainWindow, Ui_MainWindow):
 
     def update_edit_box(self):
         self.comboBox.clear()
-        with sqlite3.connect('coffee.db') as db:
+        with sqlite3.connect('data/coffee.db') as db:
             cursor = db.cursor()
             data = cursor.execute("SELECT id, sort_name FROM coffee_table").fetchall()
             data = list(map(lambda x: (str(x[0]), x[1]), data))
@@ -182,7 +182,7 @@ class CoffeeApp(QMainWindow, Ui_MainWindow):
         self.model.setHorizontalHeaderLabels(
             ['ИД', 'Название', 'Степень обжарки', 'Молотый/ в зёрнах', "Описание", 'Цена', 'Объём пачки'])
         self.tableView.setModel(self.model)
-        with sqlite3.connect('coffee.db') as db:
+        with sqlite3.connect('data/coffee.db') as db:
             cursor = db.cursor()
             coffee_data = cursor.execute("SELECT * FROM coffee_table").fetchall()
             print(coffee_data)
@@ -221,7 +221,7 @@ class CoffeeApp(QMainWindow, Ui_MainWindow):
             else:
                 packing_volume = int(packing_volume)
 
-            with sqlite3.connect('coffee.db') as db:
+            with sqlite3.connect('data/coffee.db') as db:
                 cursor = db.cursor()
                 cursor.execute("INSERT INTO coffee_table VALUES (NULL, ?, ?, ?, ?, ?, ?)",
                                (name, roasting, ground_or_in_grains, description_of_the_taste,
@@ -238,7 +238,7 @@ class CoffeeApp(QMainWindow, Ui_MainWindow):
 
     def try_edit(self):
         id_coffee = int(self.comboBox.currentText().split()[0])
-        with sqlite3.connect('coffee.db') as db:
+        with sqlite3.connect('data/coffee.db') as db:
             cursor = db.cursor()
             data = cursor.execute("SELECT * FROM coffee_table WHERE id = ?", (id_coffee,)).fetchone()
 
@@ -270,7 +270,7 @@ class CoffeeApp(QMainWindow, Ui_MainWindow):
             else:
                 packing_volume = int(packing_volume)
 
-            with sqlite3.connect('coffee.db') as db:
+            with sqlite3.connect('data/coffee.db') as db:
                 cursor = db.cursor()
                 cursor.execute(
                     "UPDATE coffee_table "
